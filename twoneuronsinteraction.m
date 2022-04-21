@@ -1,27 +1,28 @@
 % Example: Building and Running a Simple DNF Architecture with two neurons
 %one excitory and other inhibitory
 % (see the documentation for detailed explanation of the script)
-clf;
+close all;
+clear all;
 % create object sim by constructor call
 sim = Simulator();
 
 % add elements
 sim.addElement(NeuralField('field u', 100, 10, -5, 4));
-sim.addElement(LateralInteractions1D('u -> u', 100, 4, 15, 10, 15, 0), ...
-  'field u', 'output', 'field u', 'output');
+
 % LateralInteractions1D(label, size, sigmaExc, amplitudeExc, ...
 %     sigmaInh, amplitudeInh, amplitudeGlobal, circular, normalized, ...
 %     cutoffFactor)
 
 
 sim.addElement(NeuralField('field v', 100, 10, -5, 4));
-sim.addElement(LateralInteractions1D('v -> v', 100, 4, 15, 10, 15, 0), ...
-  'field v', 'output', 'field v', 'output');
+% sim.addElement(LateralInteractions1D('u -> v', 100, 4, 0, 4, 15, 0), ...
+%   'field u', 'output', 'field v', 'output');
+% sim.addElement(LateralInteractions1D('v -> u', 100, 4, 25, 4, 0, 0), ...
+%   'field v', 'output', 'field u', 'output');
 
-
-sim.addElement(GaussStimulus1D('stim A', 100, 5, 5, 25), ...
+sim.addElement(GaussStimulus1D('stim A', 100, 5, 5, 50), ...
   [], [], 'field u');
-sim.addElement(GaussStimulus1D('stim B', 100, 5, 10, 75), ...
+sim.addElement(GaussStimulus1D('stim B', 100, 5, 5, 50), ...
   [], [], 'field v');
 % GaussStimulus1D(label, size, sigma, amplitude, position, circular, normalized)
 
@@ -109,12 +110,13 @@ subplot(2,1,1)
 hold on;
 plot(sim.getComponent('field u', 'activation'), 'm');
 xlabel('field position'); ylabel('activation');
-
+ylim([-8 10])
 legend('intial state of the field', 'after 10 steps', 'after 25 steps ','after 50 steps ','after 100 steps ');
 subplot(2,1,2)
 hold on;
 plot(sim.getComponent('field v', 'activation'), 'm');
 xlabel('field position'); ylabel('activation');
+ylim([-8 10])
 % add legend to the figure
 legend('intial state of the field', 'after 10 steps', 'after 25 steps ','after 50 steps ','after 100 steps ');
 
